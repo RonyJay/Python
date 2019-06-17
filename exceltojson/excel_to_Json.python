@@ -1,0 +1,38 @@
+import xlrd
+import json
+
+file=xlrd.open_workbook('./total_lan.xlsx')
+sheet=file.sheets()[0]
+
+#获取总行数
+rows_total=sheet.nrows
+#获取总列数
+cols_total=sheet.ncols
+
+#获取第col行的所有内容
+def get_col_value(col):
+    return sheet.row_values(col)
+
+#获取第n列，第o-p行的数据（不含第p行）
+def get_rows_value(n,o,p):
+    return sheet.col_values(n,o,p)
+
+def excel_to_json():
+    key_list=get_rows_value(0,1,rows_total+1)
+    lan_list=get_col_value(0)
+    #list里面存放所有语言的键值对
+    list=[]
+    for i in range(1,cols_total):
+        list.append(dict(zip(key_list,get_rows_value(i,1,rows_total+1))))
+    #list_temp里面存放语言种类和内容的键值对
+    list_temp=[]
+    del lan_list[0] #删掉数值是Key的单元格
+    list_temp.append(dict(zip(lan_list,list)))
+    #json_str=json.dumps(list_temp,indent=2,ensure_ascii=False)
+    with open("./json.json","w",encoding='utf-8') as f:
+        json.dump(list_temp,f,indent=2,ensure_ascii=False)
+        print("finished")
+
+
+if __name__ == '__main__':
+    excel_to_json()

@@ -1,0 +1,3 @@
+将多语言文件转换成json
+excel_to_json 转换成一个整体的json文件
+excel_to_json_file根据不同的语言转换成不同的json文件
